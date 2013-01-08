@@ -62,8 +62,7 @@ class convertToBibo extends PARSEENTRIES{
 	$all_index = count($separate[0][2]);
 	$editor_names = $this->search_nested_arrays($separate,"editor");
 	$count_editor_name= count($this->splitAnd($editor_names[0]));
-	
-	
+		
     for ($c=0;$c< $all_index; $c++) {
     $keys = array_keys($separate[0][2][$c]);
 	
@@ -74,8 +73,7 @@ class convertToBibo extends PARSEENTRIES{
    // end($separate[0][2][0]); // Zeiger auf das Ende setzen
    // $last = key($separate[0][2][$c]);
   //  $keyCount = count($keys)-1;
-  
- 
+   
 	$counter = 0;
 	$author_collection = null;
 	// extract information for each EntryType
@@ -95,7 +93,7 @@ class convertToBibo extends PARSEENTRIES{
 						if($key == "pages"){
 							//foreach($value as $page){
 								list($startPage,$endPage)=explode("-",$value);
-								$str.="bibo:pageStart \"".$startPage."\";\n"."bibo:pageEnd \"".$endPage.";"."\n";
+								$str.="bibo:pageStart \"".$startPage."\";\n"."bibo:pageEnd \"".$endPage."\";\n";
 								//}
 							}
 

@@ -58,11 +58,10 @@ This array will be empty unless the following condition is met:
   - Return $this->undefinedStrings in the last position to allow compatibility with previous versions
   - Fix management of preamble in function returnArrays
 */
-
-// For a quick command-line test (php -f PARSEENTRIES.php) after installation, uncomment these lines:
-
-
-
+/*
+ * 25.12.2012 Iman
+ * adding mappings inorder to map bibtex in Bibo
+ * */
 
 
 class PARSEENTRIES
