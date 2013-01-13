@@ -468,7 +468,7 @@ class PARSEENTRIES
 	    $MAPPING["timestamp"]="";					  $MAPPING["author"] = "dcterms:creator";
 	    $MAPPING["affiliation"]="";					  $MAPPING["booktitle"] = "dcterms:isPartOf bibo:book dcterms:title";//fragen
 	    $MAPPING["key"] = "";                         $MAPPING["pages"] = "bibo";
-	    $MAPPING["size"] = "";
+	    $MAPPING["size"] = "";						  $MAPPING["volume"] = "bibo:volume";
 	    $MAPPING["phdthesis"]="bibo:degree"." "."http://purl.org/ontology/bibo/degrees/phd";
 	    $MAPPING["masterthesis"]="bibo:degree"." "."http://purl.org/ontology/bibo/degrees/ma";	   
 	    $MAPPING["unpublished"]="bibo:status"." "."http://purl.org/ontology/bibo/status/unpublished";

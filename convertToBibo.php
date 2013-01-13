@@ -61,7 +61,9 @@ class convertToBibo extends PARSEENTRIES{
 	$separate[]=$parse->returnArrays();
 	$all_index = count($separate[0][2]);
 	$editor_names = $this->search_nested_arrays($separate,"editor");
+	$author_names = $this->search_nested_arrays($separate,"author");
 	$count_editor_name= count($this->splitAnd($editor_names[0]));
+	$count_author_name = count($this->splitAnd($author_names[0]));
 		
     for ($c=0;$c< $all_index; $c++) {
     $keys = array_keys($separate[0][2][$c]);
@@ -76,6 +78,7 @@ class convertToBibo extends PARSEENTRIES{
    
 	$counter = 0;
 	$author_collection = null;
+	
 	// extract information for each EntryType
 	foreach ($separate[0][2][$c] as $key=>$value) {
 		
@@ -105,15 +108,37 @@ class convertToBibo extends PARSEENTRIES{
 						     $author_collection .= "$key:".str_replace(" ","_",$editor_name)." foaf:Name \"".$Name."\";\n"."foaf:Surname \"".$Surname."\";"."\n"."foaf:Fullname \"".$editor_name."\"."."\n";
 										
 									}
+								/*$str .= "bibo:contributorList _:bnodeEditor".";"."\n";
+								$editor_counter = 1;
+								$str .= "bibo:editor ";
+							    foreach($this->splitAnd($value) as $editor_name){
+								//if($editor_counter-1==count($editor_name))
+								 $str .= " $key:".str_replace(" ","_",$editor_name).","."\n";
+							
+								 $editor_counter++;
+									}*/
+									
 									
 							}
 							if($key=="author" ){
 								foreach($this->splitAnd($value) as $author_name){
-							 $str .= "dcterms:creator "."$key:".str_replace(" ","_",$author_name).";"."\n";
+							 $str .= "dcterms:creator "."$key: ".str_replace(" ","_",$author_name).";"."\n";
+							 							   
 							 list($Name,$Surname) = explode(" ", $author_name);
 						     $author_collection .= "$key:".str_replace(" ","_",$author_name)." foaf:Name \"".$Name."\";\n"."foaf:Surname \"".$Surname."\";"."\n"."foaf:Fullname \"".$author_name."\"."."\n";
-								
+							
 								}
+								//creating author list
+								$str .= "bibo:authorList "."_:bnodeauthor".";"."\n";
+								$author_counter = 1;
+								$author_collection .= "_:bnodeauthor ";
+							    foreach($this->splitAnd($value) as $author_name){
+								
+								 $author_collection .= "rdf:_".$author_counter." $key:".str_replace(" ","_",$author_name).";"."\n";
+								 $author_counter++;
+									}
+									$author_collection .="a "."rdf:seq.";
+									//creating author list END
 						}
 						    
 						// 
@@ -138,15 +163,17 @@ class convertToBibo extends PARSEENTRIES{
 	return $results;
 }
 }
-	$header = '<?xml version=version="1.0"?>
-<rdf:RDF xmlns:foaf="http://xmlns.com/foaf/0.1/"
-xmlns:dcterms="http://purl.org/dc/terms/"
-xmlns:dc="http://purl.org/dc/elements/1.1/"
-xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-xmlns:bibo="http://purl.org/ontology/bibo/"
-xmlns:bibo_iris="http://purl.org/net/unis/iris/"
-xmlns:bibo_place="http://purl.org/net/c4dm/event.owl#place/"
-xmlns:author="http://akws.org/author/"\>';
+//<?xml version=version="1.0"
+
+	$header = '
+@prefix: foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix: dcterms: <http://purl.org/dc/terms/>.
+@prefix: dc: <http://purl.org/dc/elements/1.1/>.
+@prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix: bibo: <http://purl.org/ontology/bibo/>.
+@prefix: bibo_iris: <http://purl.org/net/unis/iris/>.
+@prefix: bibo_place: <http://purl.org/net/c4dm/event.owl#place/>.
+@prefix: author <http://akws.org/author/>.';
 
    $go = new convertToBibo();
   // print_r($go->parsingBibtex());
