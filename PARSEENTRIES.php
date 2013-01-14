@@ -450,7 +450,7 @@ class PARSEENTRIES
 	function mapping_term($term) {
 		
 		$MAPPING["title"] = "dcterms:title";          $MAPPING["journal"] = "bibo:journal";
-		$MAPPING["year"] = "terms:issued";            $MAPPING["keywords"] = "iris:hasKeyword";
+		$MAPPING["year"] = "dcterms:issued";            $MAPPING["keywords"] = "iris:hasKeyword";
 		$MAPPING["biburl"] = "bibo:uri";              $MAPPING["institution"] = "dcterms:publisher";
 		$MAPPING["url"] = "bibo:uri";                 $MAPPING["language"] = "terms:language";
 		$MAPPING["abstract"] = "bibo:abstract";       $MAPPING["LCCN"] = "bibo:lccn";

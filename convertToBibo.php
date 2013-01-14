@@ -166,14 +166,14 @@ class convertToBibo extends PARSEENTRIES{
 //<?xml version=version="1.0"
 
 	$header = '
-@prefix: foaf: <http://xmlns.com/foaf/0.1/>.
-@prefix: dcterms: <http://purl.org/dc/terms/>.
-@prefix: dc: <http://purl.org/dc/elements/1.1/>.
-@prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix: bibo: <http://purl.org/ontology/bibo/>.
-@prefix: bibo_iris: <http://purl.org/net/unis/iris/>.
-@prefix: bibo_place: <http://purl.org/net/c4dm/event.owl#place/>.
-@prefix: author <http://akws.org/author/>.';
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix bibo: <http://purl.org/ontology/bibo/>.
+@prefix bibo_iris: <http://purl.org/net/unis/iris/>.
+@prefix bibo_place: <http://purl.org/net/c4dm/event.owl#place/>.
+@prefix author: <http://akws.org/author/>.';
 
    $go = new convertToBibo();
   // print_r($go->parsingBibtex());
