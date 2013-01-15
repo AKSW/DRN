@@ -42,6 +42,9 @@ class convertToBibo extends PARSEENTRIES{
 	//extract words betwenn "ands"
 	function splitAnd ($arr){
 		
+		if(preg_match("/,/",$arr))
+		$arrayName = explode(',',$arr);
+		else
 		$arrayName = explode(' and ',$arr);
 		
 		return $arrayName;
@@ -100,25 +103,22 @@ class convertToBibo extends PARSEENTRIES{
 								//}
 							}
 
-						if( $key == "editor"){
+						if( $key == "editor"){ 
+							
+							
 							foreach($this->splitAnd($value) as $editor_name){
-								
-							 $str .= "bibo:$key "."$key:".str_replace(" ","_",$editor_name).";"."\n";
+							 
+							//if(preg_match("/ et al./",$editor_name))
+								//str_replace(' et al.',"",$editor_name).";"."\n";
+							//else
+						   	$cleand_editor = str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",trim($editor_name))))));
+							 $str .= "bibo:$key "."$key:".$cleand_editor.";"."\n";
 							 list($Name,$Surname) = explode(" ", $editor_name);
-						     $author_collection .= "$key:".str_replace(" ","_",$editor_name)." foaf:Name \"".$Name."\";\n"."foaf:Surname \"".$Surname."\";"."\n"."foaf:Fullname \"".$editor_name."\"."."\n";
+						     $author_collection .= "$key:".$cleand_editor." foaf:Name \"".str_replace('.',"",$Name)."\";\n"."foaf:Surname \"".$Surname."\";"
+						     ."\n"."foaf:Fullname \"".$cleand_editor."\"."."\n";
 										
 									}
-								/*$str .= "bibo:contributorList _:bnodeEditor".";"."\n";
-								$editor_counter = 1;
-								$str .= "bibo:editor ";
-							    foreach($this->splitAnd($value) as $editor_name){
-								//if($editor_counter-1==count($editor_name))
-								 $str .= " $key:".str_replace(" ","_",$editor_name).","."\n";
-							
-								 $editor_counter++;
-									}*/
-									
-									
+															
 							}
 							if($key=="author" ){
 								foreach($this->splitAnd($value) as $author_name){
@@ -137,7 +137,7 @@ class convertToBibo extends PARSEENTRIES{
 								 $author_collection .= "rdf:_".$author_counter." $key:".str_replace(" ","_",$author_name).";"."\n";
 								 $author_counter++;
 									}
-									$author_collection .="a "."rdf:seq.";
+									$author_collection .="a "."rdf:seq."."\n";
 									//creating author list END
 						}
 						    
@@ -171,8 +171,10 @@ class convertToBibo extends PARSEENTRIES{
 @prefix dc: <http://purl.org/dc/elements/1.1/>.
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix bibo: <http://purl.org/ontology/bibo/>.
-@prefix bibo_iris: <http://purl.org/net/unis/iris/>.
-@prefix bibo_place: <http://purl.org/net/c4dm/event.owl#place/>.
+@prefix iris: <http://purl.org/net/unis/iris/>.
+@prefix event: <http://purl.org/net/c4dm/event.owl#place/>.
+@prefix editor: <http://purl.org/ontology/bibo/editor>.
+@prefix schema:<http://schemas.talis.com/2005/address/schema#localityName>.
 @prefix author: <http://akws.org/author/>.';
 
    $go = new convertToBibo();
@@ -183,4 +185,3 @@ class convertToBibo extends PARSEENTRIES{
 			//$output = substr_replace($str_output,".",-2);
 			echo $str_output."\n";
    }
-
