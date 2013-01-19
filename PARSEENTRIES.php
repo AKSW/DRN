@@ -461,14 +461,15 @@ class PARSEENTRIES
 		$MAPPING["copyright"] = "dcterms:rights";     $MAPPING["publisher"] = "terms:publisher";
 		$MAPPING["crossref"] = "rdfs:SeeAlso";        $MAPPING["note"] = "bibo:Note";
 		$MAPPING["edition"] = "bibo:edition";         $MAPPING["series"] = "bibo:Series";
-	    $MAPPING["school"] = "dcterms:publisher";       $MAPPING["school"] = "dcterms:publisher";
+	    $MAPPING["school"] = "dcterms:publisher";     $MAPPING["publisher"] = "dcterms:publisher";
 		$MAPPING["ISBN"] = "bibo:isbn";               $MAPPING["type"] = "bibo:shortDescription";
 	    $MAPPING["ISSN"] = "bibo:issn";               $MAPPING["howpublished"] = "bibo:Note";
 	    $MAPPING["editor"] = "bibo:editor" ;		  $MAPPING["owner"] = "bibo:owner";
 	    $MAPPING["timestamp"]="";					  $MAPPING["author"] = "dcterms:creator";
-	    $MAPPING["affiliation"]="";					  $MAPPING["booktitle"] = "dcterms:isPartOf bibo:book dcterms:title";//fragen
+	    $MAPPING["affiliation"]="";					  $MAPPING["booktitle"] = "d";
 	    $MAPPING["key"] = "";                         $MAPPING["pages"] = "bibo";
 	    $MAPPING["size"] = "";						  $MAPPING["volume"] = "bibo:volume";
+	    
 	    $MAPPING["phdthesis"]="bibo:degree"." "."http://purl.org/ontology/bibo/degrees/phd";
 	    $MAPPING["masterthesis"]="bibo:degree"." "."http://purl.org/ontology/bibo/degrees/ma";	   
 	    $MAPPING["unpublished"]="bibo:status"." "."http://purl.org/ontology/bibo/status/unpublished";
@@ -497,9 +498,9 @@ class PARSEENTRIES
 		$MAPPING["bibtexEntryType"]["masterthesis"] = "a bibo:ThesisDegree bibo_degrees:ms";	    
 		$MAPPING["bibtexEntryType"]["masterthesis"] = "a bibo:ThesisDegree bibo_degrees:phd";	    
 		$MAPPING["bibtexEntryType"]["misc"] = "a bibo:Document";	 
-		$MAPPING["bibtexEntryType"]["inproceedings"] = "a bibo:Article ; dcterms:isPartOf  bibo:Proceeding";
-		$MAPPING["bibtexEntryType"]["incollection"]="dcterms:isPartOf bibo:Book";
-		$MAPPING["bibtexEntryType"]["inbook"]="dcterms:isPartOf bibo:Book"; //fragen!
+		$MAPPING["bibtexEntryType"]["inproceedings"] = "a bibo:Article;"."\n"."dcterms:isPartOf _:bnod_booktitle";
+		$MAPPING["bibtexEntryType"]["incollection"]="a bibo:Book;"."\n"."dcterms:isPartOf _:bnod_booktitle ";
+		$MAPPING["bibtexEntryType"]["inbook"]="a bibo:Book; dcterms:hasPart "; //fragen!
  		$MAPPING["bibtexEntryType"][""]="";
 		 
 		foreach (array_keys($MAPPING) as $key_doctype) {
