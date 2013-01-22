@@ -114,10 +114,15 @@ class convertToBibo extends PARSEENTRIES{
 															
 							}
 							if($key=="author" ){
-								foreach($this->splitAnd($value) as $author_name){ 
-									//if (strpos($author_name,"{\"o}" )===true) {$deu="{\"o}"; $replace='oe';} else if( strpos($author_name,"{\"u}")===true){ $deu="{\"u}";$replace='ue';} else $deu=$replace="";
-									//if($deu == "{\"o}") $replace='oe'; else if($deu=="{\"u}") $replace='ue' ;
-							 $cleand_author = str_replace("{","",str_replace($deu,$replace,str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name))))))));
+								foreach($this->splitAnd($value) as $author_name){ //to do: finding german equ for Ö Ü Ä , change { in some names
+								//	if (strpos($author_name,"{\\\"o}" )===false) {
+										
+									//$deu="{\\\"o}"; $replace='oe'; 
+									$author_name=str_replace("{\\\"o}",'oe',$author_name);
+									
+							//		if($deu == "{\"o}") $replace='oe'; else if($deu=="{\"u}") $replace='ue' ;
+							
+							 $cleand_author =str_replace("{","",str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name)))))));
 							 $str .= "dc:creator "."$key:".$cleand_author.";"."\n";
 							 							   
 							 list($Name,$Surname) = explode(" ", ltrim($author_name));
@@ -130,8 +135,9 @@ class convertToBibo extends PARSEENTRIES{
 								 $author_counter = 1;
 								 $author_collection .= "_:bnodauthor ";
 							      foreach($this->splitAnd($value) as $author_name){
+									  $author_name=str_replace("{\\\"o}",'oe',$author_name);
 						//	if (strpos($author_name,"{\"o}" )===true) {$deu="{\"o}"; $replace='oe';} else if( strpos($author_name,"{\"u}")===true){ $deu="{\"u}";$replace='ue';} else $deu=$replace="";
-							 	     $cleand_author = str_replace($deu,$replace,str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name)))))));
+							 	     $cleand_author = str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name))))));
 									 $author_collection .= "rdf:_".$author_counter." $key:".$cleand_author.";"."\n";
 									 $author_counter++;
 										}
