@@ -499,8 +499,8 @@ class PARSEENTRIES
 		$MAPPING["bibtexEntryType"]["masterthesis"] = "a bibo:ThesisDegree bibo_degrees:phd";	    
 		$MAPPING["bibtexEntryType"]["misc"] = "a bibo:Document";	 
 		$MAPPING["bibtexEntryType"]["inproceedings"] = "a bibo:Article;"."\n"."dcterms:isPartOf _:bnod_booktitle";
-		$MAPPING["bibtexEntryType"]["incollection"]="a bibo:Book;"."\n"."dcterms:isPartOf _:bnod_booktitle ";
-		$MAPPING["bibtexEntryType"]["inbook"]="a bibo:Book; dcterms:hasPart "; //fragen!
+		$MAPPING["bibtexEntryType"]["incollection"]="a bibo:Book;"."\n"."dcterms:isPartOf _:bnod_booktitle";
+		$MAPPING["bibtexEntryType"]["inbook"]="a bibo:Book; dcterms:isPartOf "; //fragen!
  		$MAPPING["bibtexEntryType"][""]="";
 		 
 		foreach (array_keys($MAPPING) as $key_doctype) {

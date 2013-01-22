@@ -6,44 +6,13 @@
 include ('PARSEENTRIES.php');
 class convertToBibo extends PARSEENTRIES{
 	
-	//finds value of a specific key
-	 //function search_nested_arrays($array, $key){
-    //if(is_object($array))
-        //$array = (array)$array;
-   
-    //// search for the key
-    //$result = array();
-    //foreach ($array as $k => $value) {
-        //if(is_array($value) || is_object($value)){
-            //$r = $this->search_nested_arrays($value, $key);
-            //if(!is_null($r))
-                //array_push($result,$r);
-        //}
-    //}
-   
-    //if(array_key_exists($key, $array))
-        //array_push($result,$array[$key]);
-   
-   
-    //if(count($result) > 0){
-        //// resolve nested arrays
-        //$result_plain = array();
-        //foreach ($result as $k => $value) {
-            //if(is_array($value))
-                //$result_plain = array_merge($result_plain,$value);
-            //else
-                //array_push($result_plain,$value);
-        //}
-        //return $result_plain;
-    //}
-    //return NULL;
-//}
-	
-	//extract words betwenn "ands"
+	//extract words between "ands"
 	function splitAnd ($arr){
 		$arrayName=array();
 		 if (preg_match("/and/",$arr)){
-		$arrayName = explode(' and ', str_replace(".","",str_replace(",","",(ltrim($arr)))));
+			 	if (strpos($arr,"{\"o}" )===true) {$deu="{\"o}"; $replace='oe';} 
+			 	else if( strpos($arr,"{\"u}")===true){ $deu="{\"u}";$replace='ue';} else $deu=$replace="";
+		$arrayName = explode(' and ', str_replace($deu,$replace,str_replace(".","",str_replace(",","",(ltrim($arr))))));
 	}
 		//else if(preg_match("/,/",$arr)){
 		//$arrayName = explode(',',ltrim($arr));
@@ -71,6 +40,8 @@ class convertToBibo extends PARSEENTRIES{
 	//$count_editor_name= count($this->splitAnd($editor_names[0]));
 	//$count_author_name = count($this->splitAnd($author_names[0]));
 	$inproceedingsFlag="";
+	$deu="";
+	$replace="";
     for ($c=0;$c< $all_index; $c++) {
    // $keys = array_keys($separate[0][2][$c]);
    
@@ -102,8 +73,8 @@ class convertToBibo extends PARSEENTRIES{
 			
 		 }
 			 else if ($counter==1) { 
-				       											 
-							$str = "<http://aksw.org/".$value.">"." ".$parse->mapping_term_follow_doctype($tmp_key,$tmp_value).";"."\n";
+				       							 
+							$str = "<http://aksw.org/".$value."_".$tmp_value.">"." ".$parse->mapping_term_follow_doctype($tmp_key,$tmp_value).";"."\n";
 							$counter++;
 			 } 
 			 			
@@ -120,7 +91,9 @@ class convertToBibo extends PARSEENTRIES{
 						if($key == "pages"){
 							   							                                 
 								$value = str_replace("--","-",$value);
-								$value = str_replace("–","-",$value);
+								$value = str_replace("-–","-",$value);
+								$value = str_replace("–-","-",$value);
+								$value = str_replace("–","-",$value);$value = str_replace(" - ","-",$value);
 								list($startPage,$endPage)=explode("-",$value);
 								$str.="bibo:pageStart \"".$startPage."\";\n"."bibo:pageEnd \"".$endPage."\";\n";
 								
@@ -142,12 +115,13 @@ class convertToBibo extends PARSEENTRIES{
 							}
 							if($key=="author" ){
 								foreach($this->splitAnd($value) as $author_name){ 
-									$deu = "{\\\"o}";
-							 $cleand_author = str_replace("{","",str_replace($deu,'oe',str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name))))))));
+									//if (strpos($author_name,"{\"o}" )===true) {$deu="{\"o}"; $replace='oe';} else if( strpos($author_name,"{\"u}")===true){ $deu="{\"u}";$replace='ue';} else $deu=$replace="";
+									//if($deu == "{\"o}") $replace='oe'; else if($deu=="{\"u}") $replace='ue' ;
+							 $cleand_author = str_replace("{","",str_replace($deu,$replace,str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name))))))));
 							 $str .= "dc:creator "."$key:".$cleand_author.";"."\n";
 							 							   
 							 list($Name,$Surname) = explode(" ", ltrim($author_name));
-						      $author_collection .= "$key:".$cleand_author." foaf:Name \"".str_replace('.',"",str_replace($deu,'oe',$Name))."\";\n"."foaf:Surname \""
+						      $author_collection .= "$key:".$cleand_author." foaf:Name \"".str_replace('.',"",$Name)."\";\n"."foaf:Surname \""
 						      .$Surname."\";"."\n"."foaf:Fullname \"".$cleand_author."\"."."\n";
 							
 							  }
@@ -156,8 +130,8 @@ class convertToBibo extends PARSEENTRIES{
 								 $author_counter = 1;
 								 $author_collection .= "_:bnodauthor ";
 							      foreach($this->splitAnd($value) as $author_name){
-								     $deu = "{\\\"o}";
-							 	     $cleand_author = str_replace($deu,'oe',str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name)))))));
+						//	if (strpos($author_name,"{\"o}" )===true) {$deu="{\"o}"; $replace='oe';} else if( strpos($author_name,"{\"u}")===true){ $deu="{\"u}";$replace='ue';} else $deu=$replace="";
+							 	     $cleand_author = str_replace($deu,$replace,str_replace('_et_al',"",(str_replace('.',"",(str_replace(" ","_",ltrim($author_name)))))));
 									 $author_collection .= "rdf:_".$author_counter." $key:".$cleand_author.";"."\n";
 									 $author_counter++;
 										}
