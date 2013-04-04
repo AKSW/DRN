@@ -14,17 +14,66 @@ class convertToBibo extends PARSEENTRIES{
 			 	else if( strpos($arr,"{\"u}")===true){ $deu="{\"u}";$replace='ue';} else $deu=$replace="";
 		$arrayName = explode(' and ', str_replace($deu,$replace,str_replace(".","",str_replace(",","",(ltrim($arr))))));
 	}
-		//else if(preg_match("/,/",$arr)){
-		//$arrayName = explode(',',ltrim($arr));
-		//}
+		
 		else $arrayName[0] = str_replace(".","",str_replace(",","",(ltrim($arr))));
 		
 		return $arrayName;
 		}
 		
+	
+	
+	function bookTitle(){
+		
+	$parse = new PARSEENTRIES ();
+	$parse->expandMacro = TRUE;
+	$parse->openBib("Test.bib");
+	$parse->extractEntries();
+	$parse->closeBib();
+	$separate[]=$parse->returnArrays();
+	$all_index = count($separate[0][2]);
+	$inproceedingsFlag="";
+	
+	for ($c=0;$c< $all_index; $c++) {
+     
+	$counter = 0;
+	$author_collection = null;
+    $booktitle="";
+    
+	  $EntryType="";
+	  $Citation = "";
+	  $BN_Booktitle[] = "";
+		          
+	   foreach ($separate[0][2][$c] as $key=>$value) {
+		
+					if ($counter == 0) {
+					 $tmp_key = $key;
+					 $tmp_value = $value;
+					 $counter++;
+					 }
+			 				if ($key=="bibtexEntryType")
+			 				      $EntryType = $value; 
+			 				      if($key=="bibtexCitation")
+			 				      $Citation = $value;
+			 				      
+					if ($parse->mapping_term($key)!="") {
+						
+						if($key=="booktitle"){//value = title of the book
+							
+							$BN_Booktitle = $EntryType."_".$Citation." ";
+							
+							  }
+								} 
+			}//end foreach
+		
+			
+					return $BN_Booktitle; }//End for
+			 }//end of function booktitle
+		  
+	
 		  	
 	// Parse an input Bibtex file and change it to Bibo
-	
+		
+		
 	function parsingBibtex() 
 	{
 	
@@ -82,9 +131,11 @@ class convertToBibo extends PARSEENTRIES{
 					if ($parse->mapping_term($key)!="") {
 						
 						if($key=="booktitle"){
+							
 							//$str.="<http://".str_replace(" ","_",ltrim($booktitle)).">;"."\n";
 							// $author_collection .="<http://".str_replace(" ","_",ltrim($booktitle))." a bibo:Book;\n"
-							$author_collection .="_:bnod_booktitle"." a bibo:Book;\n"
+							
+							$author_collection .="_:bnod_booktitle"."_".$this->bookTitle()." a bibo:Book;\n"
 							 ."dcterms:title \"".($booktitle)."\".\n";
 							  }
 							
@@ -155,9 +206,9 @@ class convertToBibo extends PARSEENTRIES{
 					}
 
 				}
-	//print_r($preamble);//uncomment
+	//print_r($preamble);//
 	//print "\n";
-//	print_r($strings);//uncomment
+//	print_r($strings);//mapping for bibtex itself
 	//print "\n";
 	}
 	// END: extract information for each EntryType
@@ -182,9 +233,10 @@ class convertToBibo extends PARSEENTRIES{
 @prefix editor: <http://purl.org/ontology/bibo/editor/>.
 @prefix schema:<http://schemas.talis.com/2005/address/schema#localityName/>.
 @prefix author: <http://purl.org/dc/terms/contributor/>.';
-
+$k = "";
    $go = new convertToBibo();
   // print_r($go->parsingBibtex());
+   $go->bookTitle($k);
    $str_outputs = $go->parsingBibtex();
    echo $header."\n";
    foreach ($str_outputs as $str_output) {

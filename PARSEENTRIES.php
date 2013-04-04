@@ -59,8 +59,8 @@ This array will be empty unless the following condition is met:
   - Fix management of preamble in function returnArrays
 */
 /*
- * 25.12.2012 Iman
- * adding mappings inorder to map bibtex in Bibo
+ * 25.12.2012 Iman Gharib
+ * adding mappings for Entry typs and Fields  inorder to map bibtex in Bibo
  * */
 
 
@@ -488,6 +488,7 @@ class PARSEENTRIES
 	}
 		
 	function mapping_term_follow_doctype($doctype,$term) {
+		$a = new convertToBibo();
 		$mapped_term = null;
 		$MAPPING["bibtexEntryType"]["proceedings"] = "a bibo:Proceedings";
 		$MAPPING["bibtexEntryType"]["article"] = "a bibo:Article";	    
@@ -498,8 +499,8 @@ class PARSEENTRIES
 		$MAPPING["bibtexEntryType"]["masterthesis"] = "a bibo:ThesisDegree bibo_degrees:ms";	    
 		$MAPPING["bibtexEntryType"]["masterthesis"] = "a bibo:ThesisDegree bibo_degrees:phd";	    
 		$MAPPING["bibtexEntryType"]["misc"] = "a bibo:Document";	 
-		$MAPPING["bibtexEntryType"]["inproceedings"] = "a bibo:Article;"."\n"."dcterms:isPartOf _:bnod_booktitle";
-		$MAPPING["bibtexEntryType"]["incollection"]="a bibo:Book;"."\n"."dcterms:isPartOf _:bnod_booktitle";
+		$MAPPING["bibtexEntryType"]["inproceedings"] = "a bibo:Article;"."\n"."dcterms:isPartOf _:bnod_";
+		$MAPPING["bibtexEntryType"]["incollection"]="a bibo:Book;"."\n"."dcterms:isPartOf _:bnod_";
 		$MAPPING["bibtexEntryType"]["inbook"]="a bibo:Book; dcterms:isPartOf "; //fragen!
  		$MAPPING["bibtexEntryType"][""]="";
 		 
